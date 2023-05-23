@@ -1,130 +1,72 @@
-#include "win32helper.h"
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <random>
+#include <iomanip>
 
-// Define the primary window procedure
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-// Declare the entry point function
-int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) // **************** WINMAIN **************** //
-{
-    // Seed srand
-    std::random_device rd;
-    srand(rd());
-    for (int i = 0; i < rand(); i++) {
-        rand();
+
+using namespace std;
+
+int main(void) {
+    long double investment = 0;      // Investment amount
+    long double interest = 0;        // Interest rate
+    long unsigned int years = 0;     // Number of years
+    long double prev_investment;     // Previous investment amount
+    long double start_investment;    // Starting investment amount
+    int i;                           // Loop counter
+    string input;                    // Input string
+    
+    cout << fixed << setprecision(2); // Set decimal precision to 2 places for std_out
+    
+    while(true) { // Loop until valid investment amt is entered
+        cout << "Enter investment amount (in $): ";
+        cin >> input;
+        try {
+            if (stold(input) > 0) {
+                investment = stold(input);
+                break;
+            } else
+                cout << "Invalid input! Investment Must Be A Decimal Or Number Greater Than 0. Please Try Again." << endl;
+        }
+        catch (...) { cout << "Invalid input! Investment Must Be A Decimal Or Number Greater Than 0. Please Try Again." << endl; }
+    }
+    while (true) { // Loop until valid interest rate is entered
+        cout << "Enter interest rate (in %): ";
+        cin >> input;
+        try {
+            if (stold(input) > 0) {
+                interest = stold(input);
+                break;
+            } else
+                cout << "Invalid input! Interest Must Be Decimal or Number Greater Than 0. Please Try Again." << endl;
+        }
+        catch (...) { cout << "Invalid input! Interest Must Be Decimal or Number Greater Than 0. Please Try Again." << endl; }
+    }
+    while (true) { // Loop until valid number of years is entered
+        cout << "Enter number of years: ";
+        cin >> input;
+        try {
+            if (stoul(input) > 0) {
+                years = stoul(input);
+                break;
+            } else
+                cout << "Invalid input! Number Of Years Must Be Number Greater Than 0. Please Try Again." << endl;
+        }
+        catch (...) { cout << "Invalid input! Number Of Years Must Be Number Greater Than 0. Please Try Again." << endl;}
     }
     
-    // Initialize global variables
-    hInstance = hInst;
+    start_investment = investment;
     
-    // Define the window class
-    WNDCLASSEXW wcex;
-    
-    // Initialize window class variables
-    ZeroMemory(&wcex, sizeof(WNDCLASSEXW)); // Zero the memory of the window class
-    wcex.cbSize = sizeof(WNDCLASSEXW); // Set the size of the window class
-    wcex.style = CS_HREDRAW | CS_VREDRAW; // Set the style of the window class
-    wcex.lpfnWndProc = WndProc; // Set the window procedure
-    wcex.hInstance = hInstance; // Set the instance handle
-    wcex.hCursor = LoadCursor(nullptr, IDC_ARROW); // Set the cursor
-    wcex.hbrBackground = green; // Set the background color
-    wcex.lpszClassName = L"MyWindowClass"; // Set the class name
-    RegisterClassEx(&wcex); // Register the window class
-    
-    // Create the window
-    hWnd = CreateWindowEx(
-            0, // Optional window styles
-            L"MyWindowClass", // Window class
-            L"Dice Roller v3.3", // Window caption
-            WS_OVERLAPPEDWINDOW, // Window style
-            
-            CW_USEDEFAULT, CW_USEDEFAULT, 740, 480, // Size and position
-            
-            nullptr, // Parent window
-            nullptr, // Menu
-            hInstance, // Instance handle
-            nullptr // Additional application data
-    );
-    
-    // If CreateWindow fails, return error code
-    if (!hWnd)
-        return -1;
-    
-    // Show and update the window
-    ShowWindow(hWnd, nCmdShow);
-    UpdateWindow(hWnd);
-    
-    // Enter the message loop
-    MSG msg; // Message struct
-    while (GetMessage(&msg, nullptr, 0, 0)) // Get messages from the queue
-    {
-        TranslateMessage(&msg); // Translate virtual-key messages into character messages
-        DispatchMessage(&msg); // Dispatch message to the window procedure
+    cout << "STARTING INVESTMENT - $" << investment << endl; // Print starting investment amount
+    for (i = 1; i < years + 1; ++i) { // Loop through each year
+        prev_investment = investment; // Set previous investment amount
+        investment += investment * (interest / 100); // Calculate new investment amount
+        cout << "After Year " << i << " --> $" << prev_investment << " + (" << interest << "% * $" << prev_investment << ") = " << investment << endl; // Print investment amount for each year
     }
+    cout << "So after " << i - 1 << " years, the investment will be worth $" << investment << endl; // Print final investment amount
+    cout << GREEN"You earned $" << investment << " - $" << start_investment << " = $" << investment - start_investment << " in interest." << endl; // Print interest earned
     
-    // Clean up and exit
-    return (int)msg.wParam;
-    
-} // **************** WINMAIN **************** //
+    return 0;
+}
 
-// Define the window procedure
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) // **************** WNDPROC **************** //
-{
-    switch (message)
-    {
-        //////////////////// DESTROY ////////////////////
-        case WM_DESTROY:
-        {
-            PostQuitMessage(0); // Post a quit message to the message queue
-            break;
-        }
-            //////////////////// DESTROY ////////////////////
-            
-            
-            //////////////////// CREATE ////////////////////
-        case WM_CREATE:
-        {
-            paint_init();
-            
-            Label label = Label();
-            
-            paint_end();
-            break;
-        }
-            //////////////////// CREATE ////////////////////
-            
-            
-            //////////////////// PAINT ////////////////////
-        case WM_PAINT:
-        {
-            // Get device context (screen area)
-            paint_init();
-            
-            // Draw background
-            FillRect(hdc, &ps.rcPaint, green);
-            
-            
-            
-            paint_end();
-            break;
-        }
-            //////////////////// PAINT ////////////////////
-            
-            
-            //////////////////// COMMAND ////////////////////
-        case WM_COMMAND:
-        {
-        
-        
-        }
-            //////////////////// COMMAND ////////////////////
-        
-        default:
-        {
-            return DefWindowProc(hWnd, message, wParam, lParam); // Ignore any unhandled messages
-        }
-        
-    }
-    
-    return 0; // Return 0 after processing normal Windows messages
-    
-} // **************** WNDPROC **************** //
