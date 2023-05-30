@@ -4,7 +4,11 @@
 #include <random>
 #include <iomanip>
 
-
+// define ansi colorcodes using 24 bit color
+#define GREEN "\033[38;2;7;217;28m"
+#define RED "\033[38;2;255;36;58m"
+#define BLUE "\033[38;2;0;121;241m"
+#define RESET "\033[0m"
 
 using namespace std;
 
@@ -65,7 +69,7 @@ int main(void) {
         cout << "After Year " << i << " --> $" << prev_investment << " + (" << interest << "% * $" << prev_investment << ") = " << investment << endl; // Print investment amount for each year
     }
     cout << "So after " << i - 1 << " years, the investment will be worth $" << investment << endl; // Print final investment amount
-    cout << GREEN"You earned $" << investment << " - $" << start_investment << " = $" << investment - start_investment << " in interest." << endl; // Print interest earned
+    cout << GREEN "You earned $" << investment << " - $" << start_investment << " = $" << investment - start_investment << " in interest." << endl; // Print interest earned
     
     return 0;
 }
