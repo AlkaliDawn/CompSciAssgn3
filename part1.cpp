@@ -2,7 +2,6 @@
 #include <iomanip>
 #include <string>
 #include <random>
-#include <iomanip>
 
 // define ansi colorcodes using 24 bit color
 #define GREEN "\033[38;2;7;217;28m"

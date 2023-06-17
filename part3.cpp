@@ -163,31 +163,29 @@ int main(void) {
                 cout << "\nWhich direction do you think you should go? \nYou can go " north "(N)orth, " south "(S)outh, " east "(E)ast, " west "(W)est, " reset "or " quit "(Q)uit. \n\n " reset "> ";
 
             input = _getch();
+            
+            get = false;
 
             switch (input) {
             case 'N':
             case 'n':
                 cout << north << input << reset " ";
                 cout << cnorth "You go north." reset << endl;
-                get = false;
                 break;
             case 'S':
             case 's':
                 cout << south << input << reset " ";                
                 cout << csouth "You go south." reset << endl;
-                get = false;
                 break;
             case 'E':
             case 'e':
                 cout << east << input << reset " ";            
                 cout << ceast "You go east." reset << endl;
-                get = false;
                 break;
             case 'W':
             case 'w':
                 cout << west << input << reset " ";            
                 cout << cwest "You go west." reset << endl;
-                get = false;
                 break;
             case 'Q':
             case 'q':
@@ -210,6 +208,7 @@ int main(void) {
                 }
                 break;
             default:
+                get = true;
                 break;
             }
             cancel = false;
