@@ -15,21 +15,21 @@ using namespace std;
 #define bad "\033[38;2;240;6;10m"
 #define neutral "\033[38;2;240;255;31m"
 
-int getint(void) {
+int getint(void) { // Get an integer from the user
     string scrubber;
     cin >> scrubber;
     try { return stoi(scrubber); } catch (...) { return -1;}
 }
 
 int main(void) {
-    char input;
-    int ninput;
-    int sum = 0;
+    char input; // user input
+    int ninput; // user input (number)
+    int sum = 0; // sum of grades
     
-    bool run = true;
+    bool run = true; // run loop
     
-    vector<int> sem1grades = {};
-    vector<int> sem2grades = {};
+    vector<int> sem1grades = {}; // first semester grades
+    vector<int> sem2grades = {}; // second semester grades
     
     std::random_device rd;
     srand(rd());
@@ -38,21 +38,21 @@ int main(void) {
         rand();
     }
     
-    cout << good "Welcome. ";
+    cout << good "Welcome. "; // welcome message
     
     while (true) {
-        cout << good "(I)nput data,  (P)rint average,  (H)onour roll status,  e(X)it.  Choice?  > " << reset;
+        cout << good "(I)nput data,  (P)rint average,  (H)onour roll status,  e(X)it.  Choice?  > " << reset; // menu
 
         while (true) {
             input = _getch();
     
-            if (string("IiPpHhXx").find(input) != string::npos) {
+            if (string("IiPpHhXx").find(input) != string::npos) { // if input is valid
                 cout << input << endl;
             }
             
-            switch (input) {
+            switch (input) { // menu
                 case 'I':
-                case 'i': {
+                case 'i': { // input data
                     run = true;
                     while (run) {
                         cout << "(F)irst term or (S)econd term?  > ";
@@ -60,7 +60,7 @@ int main(void) {
                         cout << endl;
                         switch (input) {
                             case 'F':
-                            case 'f': {
+                            case 'f': { // first term
                                 cout << "How many first term courses did you take?  > ";
                                 ninput = getint();
                                 for (int i = 0, numcourses = ninput; i < numcourses; i++) {
@@ -74,7 +74,7 @@ int main(void) {
                                 break;
                             }
                             case 'S':
-                            case 's': {
+                            case 's': { // second term
                                 cout << "How many second term courses did you take?  > ";
                                 ninput = getint();
                                 for (int i = 0, numcourses = ninput; i < numcourses; i++) {
@@ -95,7 +95,7 @@ int main(void) {
                     break;
                 }
                 case 'P':
-                case 'p': {
+                case 'p': { // print average
                     run = true;
                     while (run) {
                         cout << "(F)irst term, (S)econd term, or (O)verall?  > ";
@@ -103,7 +103,7 @@ int main(void) {
                         cout << endl;
                         switch (input) {
                             case 'F':
-                            case 'f': {
+                            case 'f': { // first term
                                 if (!sem1grades.size()) {
                                     cout << "Before you can get an average, you need to enter data first!\n";
                                     input = ' ';
@@ -118,7 +118,7 @@ int main(void) {
                                 break;
                             }
                             case 'S':
-                            case 's': {
+                            case 's': { // second term
                                 if (!sem2grades.size()) {
                                     cout << "Before you can get an average, you need to enter data first!\n";
                                     input = ' ';
@@ -133,7 +133,7 @@ int main(void) {
                                 break;
                             }
                             case 'O':
-                            case 'o': {
+                            case 'o': { // overall
                                 if (!sem2grades.size() || !sem1grades.size()) {
                                     cout << "Before you can get an average, you need to enter data first!\n";
                                     input = ' ';
@@ -158,7 +158,7 @@ int main(void) {
                     break;
                 }
                 case 'H':
-                case 'h': {
+                case 'h': { // honour roll status
                     run = true;
                     while (run) {
                         cout << "(F)irst term, (S)econd term, or (O)verall?  > ";
@@ -166,7 +166,7 @@ int main(void) {
                         cout << endl;
                         switch (input) {
                             case 'F':
-                            case 'f': {
+                            case 'f': { // first term
                                 if (!sem1grades.size()) {
                                     cout << "Before you can get your honor roll status, you need to enter data first!\n";
                                     input = ' ';
@@ -186,7 +186,7 @@ int main(void) {
                                 break;
                             }
                             case 'S':
-                            case 's': {
+                            case 's': { // second term
                                 if (!sem2grades.size()) {
                                     cout << "Before you can get your honor roll status, you need to enter data first!\n";
                                     input = ' ';
@@ -206,7 +206,7 @@ int main(void) {
                                 break;
                             }
                             case 'O':
-                            case 'o': {
+                            case 'o': { // overall
                                 if (!sem2grades.size() || !sem1grades.size()) {
                                     cout << "Before you can get your honor roll status, you need to enter data first!\n";
                                     input = ' ';
@@ -236,11 +236,11 @@ int main(void) {
                     break;
                 }
                 case 'X':
-                case 'x': {
+                case 'x': { // exit
                     return 12;
                 }
             }
-            if (string("IiPpHhXx").find(input) != string::npos) {
+            if (string("IiPpHhXx").find(input) != string::npos) { // if input is valid
                 break;
             }
         }

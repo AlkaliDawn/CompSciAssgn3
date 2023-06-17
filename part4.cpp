@@ -17,7 +17,7 @@ std::vector<int> ways {
     0, 0, 1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1
 };
 
-std::unordered_map<int, string> diceart = {
+std::unordered_map<int, string> diceart = { // array to store dice art
     {1, ".______________.\n"
         "|              |\n"
         "|              |\n"
@@ -93,12 +93,12 @@ std::unordered_map<int, string> diceart = {
 #define casino "\033[38;2;107;255;171m"
 
 int main(void) {
-    int bet;
-    int roll;
-    int money;
-    int dice1;
-    int dice2;
-    int dicetotal;
+    int bet;        // bet amount
+    int roll;       // roll guess
+    int money;      // money amount
+    int dice1;      // dice 1
+    int dice2;      // dice 2
+    int dicetotal;  // total of dice 1 and 2
     
     char x;
 
@@ -115,53 +115,54 @@ int main(void) {
 
     money = rand() % 1000 + 1;
     
-    while (money > 1) {
+    while (money > 1) { // while the player has money
         cout << bold underline casino "WELCOME" << (hasRun ? " BACK" : "") << " TO THE BET ZONE!!!" reset bold good "\nYOU HAVE " << money << " DOLLARS! \n\n" reset;
         hasRun = true;
 
-        while (true) {
+        while (true) { // get bet amount
             cout << "How much would you like to bet?  > ";
             cin >> scrubber;
             try { bet = stoi(scrubber); } catch (...) { cout << "INVALID INPUT! Please enter an amount " underline "from $1" << " to $" << money << nounderline "\n\n";
                 continue;
             } 
-            if (bet < 0 || bet > money + 1) {
+            if (bet < 0 || bet > money + 1) { // if bet is invalid
                 cout << "INVALID INPUT! Please enter an amount " underline "from $1" << " to $" << money << nounderline "\n\n";
                 continue;
             }
             else break;
         }
 
-        while (true) {
+        while (true) { // get roll guess
             cout << "What do you think the roll will be?  > ";
             cin >> roll;
-            if (roll < 2 || roll > 12) {
+            if (roll < 2 || roll > 12) { // if roll is invalid
                 cout << "INVALID INPUT! Please enter a number from 2 to 12\n";
                 continue;
             }
             else break;
         }
 
-        cout << "Rolling...";
+        cout << "Rolling..."; // roll dice
         for (int i = 0; i < 13; i++) {
             _sleep(70);
             cout << ".";
         }
-        dice1 = rand() % 6 + 1;
-        dice2 = rand() % 6 + 1;
-        dicetotal = dice1 + dice2;
+        dice1 = rand() % 6 + 1;     // get dice 1
+        dice2 = rand() % 6 + 1;     // get dice 2
+        dicetotal = dice1 + dice2;  // get total of dice 1 and 2
 
+        // print dice art
         cout << "\n\n" magic << diceart.at(dice1) << diceart.at(dice2) << reset << endl;
 
         cout << "YOU ROLLED " << dice1 << " AND " << dice2 << " FOR A TOTAL OF " << dicetotal << "...\n";
         cout << "MEANING YOU ";
 
-        if (roll == dicetotal) {
+        if (roll == dicetotal) { // if roll is correct
             cout << good "WIN $" << bet << " * 20 / " << ways[roll] << " ( there " << (ways[roll] == 1 ? "is " : "are ") << ways[roll] << " way" << (ways[roll] == 1 ? " " : "s ") << "to roll " << roll << ") !!!!!!!! CONGRATS!\n" reset ;
             money += bet * 20 / ways[roll];
         }
 
-        else {
+        else { // if roll is incorrect
             cout << bad "LOST (" << (roll > dicetotal ? roll : dicetotal) << " - " << (roll < dicetotal ? roll : dicetotal) << ") * $" << bet << " * " << ways[roll] << " (there " << (ways[roll] == 1 ? "is " : "are ") << ways[roll] << " way" << (ways[roll] == 1 ? " " : "s ") << "to roll " << roll << ") = $" << (roll > dicetotal ? roll - dicetotal : dicetotal - roll) * bet * ways[roll] << "!!!! LOL GET REKTTTT!!!!!!!! XD XD\n\n" reset;
             money -= (roll > dicetotal ? roll - dicetotal : dicetotal - roll) * bet * ways[roll];
         }
@@ -169,20 +170,20 @@ int main(void) {
         cout << neutral underline "Your current balance: $" << money << reset << endl;
 
     
-        if (money > 0) {
+        if (money > 0) { // if player has money
             cout << "\n " underline "PLAY AGAIN ? (y/n)  >" reset " ";
             bool a = true;
-            while (a) {
+            while (a) { // get play again input
                 x = getchar();
-                switch (x) {
+                switch (x) { // if play again
                     case 'Y':
-                    case 'y': {
+                    case 'y': { // if play again
                         cout << reset "y\n\n\n";
                         a = false;
                         break;
                     }
                     case 'N':
-                    case 'n': {
+                    case 'n': { // if exit
                         cout << reset "n";
                         cout << "\n\npress any key to exit...";
                         return 2;

@@ -1,7 +1,5 @@
 #include <iostream>
 #include <string>
-#include <iomanip>
-#include <cfenv>
 #include <random>
 #include <conio.h>
 
@@ -17,19 +15,19 @@ using namespace std;
 #define bad "\033[38;2;240;6;10m"
 #define neutral "\033[38;2;240;255;31m"
 
-int getint(void) {
+int getint(void) { // Get an integer from the user
     string scrubber;
     cin >> scrubber;
     try { return stoi(scrubber); } catch (...) { return -1;}
 }
 
 int main(void) {
-    int bet;
-    char input;
-    int money;
-    bool win;
+    int bet;        // bet amount
+    char input;     // user input
+    int money;      // money amount
+    bool win;       // win or lose
     
-    bool hasrun = false;
+    bool hasrun = false; // has run before
     
     std::random_device rd;
     srand(rd());
@@ -38,37 +36,37 @@ int main(void) {
         rand();
     }
     
-    money = rand() % 1000 + 1;
-    
-    while (true) {
+    money = rand() % 1000 + 1; // random money amount
+
+    while (true) { // main loop
         cout << good "\nWelcome" << (hasrun ? " back " : " ")
              << "to the Dakota Casino, in the Rock, Paper, Scissors Area! You have $" << money << endl << reset;
         hasrun = true;
-        while (true) {
+        while (true) { // get bet
             cout << neutral "\nHow much do you want to bet?  > " reset;
             bet = getint();
-            if (bet > 0 && bet <= money) {
+            if (bet > 0 && bet <= money) { // if bet is valid
                 break;
             }
             cout << bad "Bet must be between $1 and $" << money << "!\n\n" reset;
         }
         
-        win = rand() % 3 - 1;
+        win = rand() % 3 - 1; // win or lose
         
         cout << good "\nAlright! Rock, Paper, or Scissors (R | P | S)?  > " reset;
         
-        while (true) {
+        while (true) { // get input
             input = _getch();
             
-            switch (input) {
+            switch (input) { // check input
                 case 'R':
                 case 'r': {
                     cout << rock << input << reset << endl;
-                    if (win) {
+                    if (win) { // win
                         cout << good "I choose Scissors. Since Rock crushes Scissors, you win $" << bet
                              << ". You now have $" << money + bet << reset;
                         money += bet;
-                    } else {
+                    } else { // lose
                         cout << bad "I choose Scissors. Since Paper covers Rock, you lose $" << bet
                              << ". You now have $" << money - bet << reset;
                         money -= bet;
@@ -76,13 +74,13 @@ int main(void) {
                     break;
                 }
                 case 'P':
-                case 'p': {
+                case 'p': { // paper
                     cout << paper << input << reset << endl;
-                    if (win) {
+                    if (win) { // win
                         cout << good "I choose Rock. Since Paper covers Rock, you win $" << bet << ". You now have $"
                              << money + bet << reset;
                         money += bet;
-                    } else {
+                    } else { // lose
                         cout << bad "I choose Scissors. Since Scissors cut Paper, you lose $" << bet
                              << ". You now have $" << money - bet << reset;
                         money -= bet;
@@ -90,13 +88,13 @@ int main(void) {
                     break;
                 }
                 case 'S':
-                case 's': {
+                case 's': { // scissors
                     cout << scissor << input << reset << endl;
-                    if (win) {
+                    if (win) { // win
                         cout << good "I choose Paper. Since Scissors cut Paper, you win $" << bet << ". You now have $"
                              << money + bet << reset;
                         money += bet;
-                    } else {
+                    } else { // lose
                         cout << bad "I choose Rock. Since Rock crushes Scissors, you lose $" << bet
                              << ". You now have $" << money - bet << reset;
                         money -= bet;
@@ -104,35 +102,35 @@ int main(void) {
                     break;
                 }
             }
-            if (string("RrPpSs").find(input) != string::npos) {
+            if (string("RrPpSs").find(input) != string::npos) { // if input is valid
                 break;
             }
         }
-        if (money < 1) {
+        if (money < 1) { // if out of money
             cout << bad "Sorry, you ran out of money!!\n" reset;
             _getch();
             return 0;
         }
         cout << good "\n\nWould you like to play again? ( Y / N )  > " reset;
-        while (true) {
+        while (true) { // get input
             input = _getch();
             
-            switch (input) {
+            switch (input) { // check input
                 case 'Y':
-                case 'y': {
+                case 'y': { // yes
                     cout << good << input << reset << endl;
                     cout << "\nAlright!...\n\n";
                     break;
                 }
                 case 'N':
-                case 'n': {
+                case 'n': { // no
                     cout << bad << input << reset << endl;
                     cout << neutral "You leave with $" << money << ". Come again soon!\n" reset;
                     _getch();
                     return 0;
                 }
             }
-            if (input == 'y' || input == 'Y') {
+            if (input == 'y' || input == 'Y') { // if input is valid
                 break;
             }
         }

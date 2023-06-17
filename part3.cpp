@@ -60,7 +60,7 @@ std::vector<int> current_results = {0, 0, 0, 0}; // analog
 
 std::vector<int> guesses = {0, 0, 0, 0}; // analog
 
-int directiontoint(char x) {
+int directiontoint(char x) { // Converts a direction to an integer
     switch (x) {
         case 'N':
         case 'n':
@@ -90,22 +90,23 @@ int main(void) {
         rand();
     }
 
-    int num_rounds = 0;
+    int num_rounds = 0; // Number of rounds
 
-    int rightanswers = 0;
+    int rightanswers = 0; // Number of right answers
 
-    char input;
+    char input; // User input
 
-    bool cancel = false;
+    bool cancel = false; // Cancel the game
 
-    bool level = true;
+    bool level = true; // Level up
 
-    bool get = true;
+    bool get = true; // Get a new result
 
+    // Intro text
     cout << "You are searching an " stone "underground " magic "mystical " swamp "labyrinth" reset ", filled with perils, twists, and turns.\n" reset "You have to find your way to the heart, using your psychic powers. \nYou can go " north "(N)orth, " south "(S)outh, " east "(E)ast, " west "(W)est, " reset "or " quit "(Q)uit. \n" reset;
     cout << "Which direction do you think you should go? \n\n > ";
 
-    while (true) {
+    while (true) { // Main game loop
         if (rightanswers == 3) {
             cout << magic "\n\033[1mYou feel a surge of energy, and the heart of the labyrinth is revealed to you." good "You have won!\n\n\033[0m";
             cout << reset "\n It took you " << num_rounds << " rounds to reach the heart, so you were right " <<  3 / (float)num_rounds * 100 << "% of the time. (3/" << num_rounds << ")\n";
@@ -116,17 +117,15 @@ int main(void) {
             break;
         }
 
-        level = true;
+        level = true; // Reset level
 
-        int ans = std::rand() % 4; 
+        int ans = std::rand() % 4; // Random answer
 
-        temp_used_badresults = {0, 0, 0, 0, 0, 0, 0};
+        temp_used_badresults = {0, 0, 0, 0, 0, 0, 0}; // Reset temp used bad results
 
-        
+        temp_used_goodresults = {0, 0, 0, 0, 0}; // Reset temp used good results
 
-        temp_used_goodresults = {0, 0, 0, 0, 0};
-
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++) { // For loop to set up results
             if (i != ans) {
                 while (true) {
                     int a = rand() % badresults.size();
@@ -134,8 +133,8 @@ int main(void) {
                         if (used_badresults[a] || temp_used_badresults[a])
                             continue;
                         else { // break if not used
-                            current_results[i] = a;
-                            temp_used_badresults[a] = true;
+                            current_results[i] = a; // set current result
+                            temp_used_badresults[a] = true; // set temp used
                             break;
                         } 
                     }
@@ -144,13 +143,13 @@ int main(void) {
             }
         }
 
-        while (true) {
+        while (true) { // While loop to set up answer
             current_results[ans] = rand() % goodresults.size(); // make sure good answer outcome is within range
             if (used_goodresults[current_results[ans]] || temp_used_goodresults[current_results[ans]]) { // if used
                 continue;
             }
             else {// break if not used
-                temp_used_goodresults[current_results[ans]] = true;
+                temp_used_goodresults[current_results[ans]] = true; // set temp used
                 break;
             } 
         }
@@ -162,81 +161,81 @@ int main(void) {
             if (std::string("nNsSwWeEqQ").find(input) != std::string::npos) // if last input was valid
                 cout << "\nWhich direction do you think you should go? \nYou can go " north "(N)orth, " south "(S)outh, " east "(E)ast, " west "(W)est, " reset "or " quit "(Q)uit. \n\n " reset "> ";
 
-            input = _getch();
+            input = _getch(); // Get input
             
-            get = false;
+            get = false; // Reset get
 
             switch (input) {
-            case 'N':
+            case 'N': // user goes north
             case 'n':
                 cout << north << input << reset " ";
                 cout << cnorth "You go north." reset << endl;
                 break;
-            case 'S':
+            case 'S': // user goes south
             case 's':
                 cout << south << input << reset " ";                
                 cout << csouth "You go south." reset << endl;
                 break;
-            case 'E':
+            case 'E': // user goes east
             case 'e':
                 cout << east << input << reset " ";            
                 cout << ceast "You go east." reset << endl;
                 break;
-            case 'W':
+            case 'W': // user goes west
             case 'w':
                 cout << west << input << reset " ";            
                 cout << cwest "You go west." reset << endl;
                 break;
-            case 'Q':
+            case 'Q': // user quits
             case 'q':
                 cout << quit << input << reset " ";            
                 cout << cquit "Press Q again to confirm. ";
                 input = _getch();
-                if ( input == 'Q' || input == 'q') {
+                if ( input == 'Q' || input == 'q') { // if user confirms quit
                     cout << bad "\033[1m" << input << " " reset;
                     cout << cquit "Exiting..." reset;
                     return 0;
                 }
-                else if (input != ' ') {
+                else if (input != ' ') { // if user cancels quit
                     cout << bad "\033[1m" << input << " " reset;
                     cout << good "Cancelled.\n" reset;
                     cancel = true;
                 }
-                else {
+                else { // if user cancels quit
                     cout << good "Cancelled.\n" reset;
                     cancel = true;
                 }
                 break;
             default:
-                get = true;
+                get = true; // reset get
                 break;
             }
-            cancel = false;
+            cancel = false; // reset cancel
         }
 
         if (directiontoint(input) == ans) { // input is correct
             rightanswers++;
 
-            if (rightanswers != 3) {
+            if (rightanswers != 3) { // if not last level
                 cout << endl << neutral << 3 - rightanswers << " Guess" << (rightanswers - 1 ? "" : "es") << " to go!! \n\n" << reset;
                 cout << good << goodresults[current_results[ans]] << reset;
             }
 
-            used_goodresults[current_results[ans]] = true;
-            level = false;
-            guesses[ans]++;
-            get = true;
+            used_goodresults[current_results[ans]] = true; // set used good results to true
+            level = false; // break level
+            guesses[ans]++; // add to guesses
+            get = true; // reset get
         }
-        else {
-            cout << bad << badresults[current_results[directiontoint(input)]] << endl << reset;
-            used_badresults[current_results[directiontoint(input)]] = true;
-            guesses[directiontoint(input)]++;
-            get = true;
+        else { // input is incorrect
+            cout << bad << badresults[current_results[directiontoint(input)]] << endl << reset; // print bad result
+            used_badresults[current_results[directiontoint(input)]] = true; // set used bad results to true
+            guesses[directiontoint(input)]++; // add to guesses
+            get = true; // reset get
         }
-        num_rounds++;
+        num_rounds++; // add to rounds
     }
     
     }  
-    _getch();
+    _getch(); // wait for input
     return 13;
 }

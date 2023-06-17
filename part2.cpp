@@ -5,18 +5,18 @@
 
 using namespace std;
 
-    bool isprime;
-    long long int nums;
-    long long int num_prime;
-    string scrubber;
-    long long int input;
-    long long int most_factors;
-    long long int most_factors_num;
-    long long int sum_factors;
-    long long int num_factors;
-    long long int num_even = 0;
+    bool isprime;                   // Boolean to store whether or not number is prime
+    long long int nums;             // Number of numbers to check
+    long long int num_prime;        // Number of prime numbers
+    string scrubber;                // String to store user input
+    long long int input;            // Long long int to store user input
+    long long int most_factors;     // Number with most factors
+    long long int most_factors_num; // Number of factors of number with most factors
+    long long int sum_factors;      // Sum of factors
+    long long int num_factors;      // Number of factors
+    long long int num_even = 0;     // Number of even numbers
 
-string factors(long long int num) {
+string factors(long long int num) { // function to calculate factors of a number
     string factors = "";
 
     num_factors = 0;
@@ -54,7 +54,7 @@ string factors(long long int num) {
     return factors;
 }
 
-int main(void) {
+int main(void) { // main function
 
     cout << setprecision(3); // Set decimal precision to 3 places for std_out
     std::fesetround(FE_DOWNWARD); // Set rounding mode to round down
@@ -90,7 +90,7 @@ int main(void) {
  
         }
 
-        if (input % 2 == 0)
+        if (input % 2 == 0) // check if even
             num_even++;
 
         cout << input << " is " << (input % 2 == 1 ? "odd" : "even") << ", and its factors are " << factors(input) << "." << endl;
